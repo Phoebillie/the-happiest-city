@@ -1,3 +1,5 @@
+import json
+from collections import Counter
 
 class Afinn:
     # 构造函数
@@ -41,3 +43,35 @@ class Afinn:
 
         except Exception as e:
             raise e
+
+
+class GirdReader:
+
+    def __init__(self):
+        self.gird_geo_dict = {}
+        self.grid_freq_dict = Counter()
+
+    def read(self, path: str):
+        with open(path) as f:
+            data = json.load(f)
+        try: 
+            features = data['features']
+
+            for feat in features:
+                props = feat['properties']
+
+                self.gird_geo_dict[props['id']] = [
+                    props['xmin'],
+                    props['xmax'],
+                    props['ymin'],
+                    props['ymax']
+                ]
+        return self.gird_geo_dict
+
+    def count(self):
+    """
+    TO DO
+    """
+    pass
+
+        
