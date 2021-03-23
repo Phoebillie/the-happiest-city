@@ -49,7 +49,6 @@ class GirdReader:
 
     def __init__(self):
         self.gird_geo_dict = {}
-        self.grid_freq_dict = Counter()
 
     def read(self, path: str):
         with open(path) as f:
@@ -66,12 +65,16 @@ class GirdReader:
                     props['ymin'],
                     props['ymax']
                 ]
-        return self.gird_geo_dict
+            return self.gird_geo_dict
+        except json.decoder.JSONDecodeError as error:
+            print(error)
 
-    def count(self):
-    """
-    TO DO
-    """
-    pass
+
+# if __name__ == "__main__":
+#     print('test begin')
+#     file_path = r'../../files/melbGrid.json'
+#     GReader = GirdReader()
+#     grid_dict = GReader.read(file_path)
+#     print(grid_dict)
 
         
