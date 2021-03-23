@@ -48,9 +48,9 @@ class Afinn:
 class GirdReader:
 
     def __init__(self):
-        self.gird_geo_dict = {}
+        self.grid_geo_dict = {}
 
-    def read(self, path: str):
+    def read(self, path: str) -> dict:
         with open(path) as f:
             data = json.load(f)
         try: 
@@ -59,16 +59,15 @@ class GirdReader:
             for feat in features:
                 props = feat['properties']
 
-                self.gird_geo_dict[props['id']] = [
+                self.grid_geo_dict[props['id']] = [
                     props['xmin'],
                     props['xmax'],
                     props['ymin'],
                     props['ymax']
                 ]
-            return self.gird_geo_dict
+            return self.grid_geo_dict
         except json.decoder.JSONDecodeError as error:
             print(error)
-
 
 # if __name__ == "__main__":
 #     print('test begin')
