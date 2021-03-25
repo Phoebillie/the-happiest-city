@@ -4,12 +4,17 @@
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
 from utils.Trie import Trie
+from utils.readfile.read_afinn_txt import GirdReader
 from TwitterFeatureGrabber import FeatureGrabber
 import csv
+import time
+import tabulate
 # Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    # print_hi('PyCharm')
-    """ TEST---Tokenizer and Trie """
+def test1():
+    """ TEST---
+    Tokenizer and Trie
+    json preprocessing
+    """
     senti_score_trie = Trie()
     feat_grabber = FeatureGrabber()
     with open(r'.\files\AFINN.txt') as f:
@@ -37,4 +42,38 @@ if __name__ == '__main__':
             # print(json_data)
             # break
             print(e)
-            pass
+            continue
+
+    def mpi_calc_happiness():
+        pass
+
+
+    def merge_result()；
+        pass 
+
+    def print_output(grid_dict):
+        """ 
+        @params: grid_dict
+        {'A1': [] 
+        },...
+        """
+        grids = list(grid_dict.keys)
+        num_score = list(dummy.values())
+
+        for i in range(len(grids)):
+            num_score[i][0] = format(num_score[i][0], ',')
+            num_score[i][1] = '{:+}'.format(num_score[i][1])
+            num_score[i].insert(0, grids[i])
+
+        headers = ['Cell', '#Total Tweets', '#Overal Sentiment Score']
+        colalign = ('center','center','center')
+
+        print(tabulate(num_score, headers, colalign= colalign , tablefmt = 'fancy_grid'))
+        
+    def main():
+        pass
+
+
+if __name__ == '__main__':
+    pass
+    
