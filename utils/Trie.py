@@ -56,16 +56,30 @@ if __name__ == "__main__":
         ['apple', 2],
         ['banana', 3],
         ['aids', -4]
-        ] 
+        ]
     T = Trie()
     for e in dummy:
         T.add(e[0], e[1])
     assert(T.find('appl') == 0)
-    # with open('AFINN.txt') as f:
-    #     reader = csv.reader(f, delimiter="\t")
-    #     d = list(reader)
-    # print(d[10][0]) # 248
-        
+
+    with open('../files/AFINN.txt', 'r') as f:
+        reader = csv.reader(f, delimiter="\n")
+        d = list(reader)
+
+    # print(d)
+    # for item in d:
+    #     print(item)
+    #     s = item[0].split('\t')
+    #     key = s[0]
+    #     value = s[1]
+    #     print(key)
+    #     print(value)
+
+    #     T.add(item[0], item[1])
+    #     assert(T.find('appl') == 0)
+    #
+    # print(d[1989][0]) # 248
+
     
     
     
