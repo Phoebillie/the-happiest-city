@@ -1,5 +1,7 @@
 import json
+import csv
 from collections import Counter
+# from Trie import Trie
 
 class Afinn:
     # 构造函数
@@ -69,11 +71,38 @@ class GirdReader:
         except json.decoder.JSONDecodeError as error:
             print(error)
 
+class SentiScoreReader:
+
+    def __init__(self, Trie):
+        self.phrase_list = []
+        self.word_trie = Trie
+
+    def read(self, path:str):
+        with open(path) as f:
+            reader = csv.reader(f, delimiter="\t")
+            word_score = list(reader)
+            
+            for word, score in word_score:
+                if ' ' in word:
+                    self.phrase_list.append(word)
+                    self.word_trie.add(word.replace(' ', '_'), score)
+                else:
+                    self.word_trie.add(word, score)
+    
+    def find_senti_score(self, word):
+        return self.word_trie.find(word)
+
+
 # if __name__ == "__main__":
 #     print('test begin')
 #     file_path = r'../../files/melbGrid.json'
 #     GReader = GirdReader()
 #     grid_dict = GReader.read(file_path)
 #     print(grid_dict)
+    # print('test begin')
+    # file_path = r'../../files/AFINN.txt'
+    # SentiReader = SentiScoreReader()
+    # SentiReader.read(file_path)
+    # print(SentiReader.find_senti_score('can\'t_stand'))
 
         

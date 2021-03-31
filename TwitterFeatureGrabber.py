@@ -7,6 +7,7 @@ class FeatureGrabber:
 
     def __init__(self):
         self.tknzr = TweetTokenizer()
+        self.phrase_list = []
 
     def convert2json(self, line):
         """
@@ -33,16 +34,46 @@ class FeatureGrabber:
     def get_coordinates(self, json_data):
         return json_data['doc']['coordinates']['coordinates']
 
+    def add_phrase(self, phrase_list):
+        self.phrase_list = self.phrase_list + phrase_list
+
     def token_filter(self, tweet):
-        # valid punctuation: !,?,'"
-        tokens = self.tknzr.tokenize(tweet)
-        tokens_LC = [t.lower() for t in tokens]
-        pattern = '[a-z]+[\!\,\?\'\"]?'
-        valid_tokens = [t for t in tokens_LC if re.match(pattern, t) != None]
+        # valid punctuation: !,?.'"
+        # tokens = self.tknzr.tokenize(tweet)
+        # tokens_LC = [t.lower() for t in tokens]
+        tweet_LC = tweet.lower()
+
+        phrase_list_US = [p.replace(' ', '_') for p in self.phrase_list]
+        for phrase in self.phrase_list:
+             tweet_LC = tweet_LC.replace(phrase, phrase.replace(' ', '_'))
+        print(tweet_LC)
+        # print(phrase_list_US)
+        # for i in range(len(phrase_list_US)):
+        #     tweet_LC.replace(self.phrase_list[i], phrase_list_US[i])
+        #     print(tweet_LC)
+        tokens = tweet_LC.split()
+        pattern = '([a-z]+\_?[a-z]*)[\!\,\?\.\'\"]*$'
+        # valid_tokens = [t for t in tokens_LC if re.match(pattern, t) != None]
+        # valid_tokens = [t for t in tokens if re.match(pattern, t) != None]
+
+        valid_tokens = [] 
+        for t in tokens:
+            match = re.match(pattern, t)
+            if match:
+                valid_tokens.append(match.group(1))
         return valid_tokens
     
     def get_sentiment_score(self, json_data, senti_score_trie) -> int:
         tweet = self.get_tweet(json_data)
+        valid_tokens = self.token_filter(tweet)
+        total_score = 0
+        for t in valid_tokens:
+            if int(senti_score_trie.find(t)) > 0:
+                print(t)
+            total_score += int(senti_score_trie.find(t))
+        return total_score
+
+    def get_sentiment_score(self, senti_score_trie):
         valid_tokens = self.token_filter(tweet)
         total_score = 0
         for t in valid_tokens:

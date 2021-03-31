@@ -3,12 +3,13 @@
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
-from utils.Trie import Trie
-from utils.readfile.read_afinn_txt import GirdReader
+from utils.readfile.Trie import Trie
+from utils.readfile.read_afinn_txt import GirdReader, SentiScoreReader
 from TwitterFeatureGrabber import FeatureGrabber
 import csv
 import time
 import tabulate
+
 # Press the green button in the gutter to run the script.
 def test1():
     """ TEST---
@@ -44,11 +45,25 @@ def test1():
             print(e)
             continue
 
+def test2():
+    # edge case test for matching
+    senti_score_trie = Trie()
+    senti_reader = SentiScoreReader(senti_score_trie)
+    feat_grabber = FeatureGrabber()
+    path = r'.\files\AFINN.txt'
+    senti_reader.read(path)
+    #print(senti_reader.phrase_list)
+    feat_grabber.add_phrase(senti_reader.phrase_list)
+    #print(feat_grabber.phrase_list)
+    test_tweet = '@pusher: cashing in not WORKING.. does not work.#'
+    print(feat_grabber.token_filter(test_tweet))
+
+
     def mpi_calc_happiness():
         pass
 
 
-    def merge_result()；
+    def merge_result():
         pass 
 
     def print_output(grid_dict):
@@ -69,11 +84,11 @@ def test1():
         colalign = ('center','center','center')
 
         print(tabulate(num_score, headers, colalign= colalign , tablefmt = 'fancy_grid'))
-        
+
     def main():
         pass
 
 
 if __name__ == '__main__':
-    pass
+    test2()
     
