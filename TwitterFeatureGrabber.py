@@ -14,7 +14,6 @@ class FeatureGrabber:
 
         @rtype: json 
         """
-
         if line[-1] == '\n':
             line = line[:-1]
         if line[-2:] == ':[': # first line
@@ -23,6 +22,8 @@ class FeatureGrabber:
             return json.loads(line[:-2])
         elif line[-2:] == '},': # common twitter line 
             return json.loads(line[:-1])
+        elif line[-2:] == '}}':
+            return json.loads(line)
         else:
             print(line[-5:])
             raise ValueError('Irregular line found')
