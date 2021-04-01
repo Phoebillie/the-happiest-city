@@ -6,11 +6,14 @@
 from utils.readfile.Trie import Trie
 from utils.readfile.read_afinn_txt import GirdReader, SentiScoreReader
 from TwitterFeatureGrabber import FeatureGrabber
+from mpi4py import MPI
 import csv
 import time
 import tabulate
 
 # Press the green button in the gutter to run the script.
+
+start_time = time.time()
 def test1():
     """ TEST---
     Tokenizer and Trie
@@ -58,9 +61,25 @@ def test2():
     test_tweet = '@pusher: cashing in not WORKING.. does not work.#'
     print(feat_grabber.token_filter(test_tweet))
 
-
+    def init_counter(grids):
+        return {g: [] for g in grids}
+    
     def mpi_calc_happiness():
-        pass
+        comm = MPI.COMM_WORLD
+        size = comm.Get_size()
+        rank = comm.Get_rank()
+
+        grid_reader = GirdReader()
+        grids = grid_reader.read(r'.\files\melbGrid.json').keys()
+
+        if rank == 0:
+            result = init_counter(grids)
+        else:
+            result = init_counter(grids)
+
+        print(size, 'core(s) used')
+
+        print(result)
 
 
     def merge_result():
@@ -69,7 +88,7 @@ def test2():
     def print_output(grid_dict):
         """ 
         @params: grid_dict
-        {'A1': [] 
+        {'A1': [num_tweets, senti_score] 
         },...
         """
         grids = list(grid_dict.keys)
@@ -80,15 +99,20 @@ def test2():
             num_score[i][1] = '{:+}'.format(num_score[i][1])
             num_score[i].insert(0, grids[i])
 
-        headers = ['Cell', '#Total Tweets', '#Overal Sentiment Score']
+        headers = ['Cell', '#Total Tweets', '#Overall Sentiment Score']
         colalign = ('center','center','center')
 
         print(tabulate(num_score, headers, colalign= colalign , tablefmt = 'fancy_grid'))
+        print('running time: %.4f seconds' % (time.time() - start_time))
+
+
+    def test3():
+        mpi_calc_happiness()
 
     def main():
         pass
 
 
 if __name__ == '__main__':
-    test2()
+    test3()
     
