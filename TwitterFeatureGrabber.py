@@ -32,6 +32,9 @@ class FeatureGrabber:
         return json_data['doc']['text']
     
     def get_coordinates(self, json_data):
+        """ 
+        return: [lang, lat] 
+        """
         return json_data['doc']['coordinates']['coordinates']
 
     def add_phrase(self, phrase_list):
@@ -46,7 +49,7 @@ class FeatureGrabber:
         phrase_list_US = [p.replace(' ', '_') for p in self.phrase_list]
         for phrase in self.phrase_list:
              tweet_LC = tweet_LC.replace(phrase, phrase.replace(' ', '_'))
-        print(tweet_LC)
+        # print(tweet_LC)
         # print(phrase_list_US)
         # for i in range(len(phrase_list_US)):
         #     tweet_LC.replace(self.phrase_list[i], phrase_list_US[i])
@@ -68,19 +71,11 @@ class FeatureGrabber:
         valid_tokens = self.token_filter(tweet)
         total_score = 0
         for t in valid_tokens:
-            if int(senti_score_trie.find(t)) > 0:
-                print(t)
+            # if int(senti_score_trie.find(t)) > 0:
+            #     print(t)
             total_score += int(senti_score_trie.find(t))
         return total_score
 
-    def get_sentiment_score(self, senti_score_trie):
-        valid_tokens = self.token_filter(tweet)
-        total_score = 0
-        for t in valid_tokens:
-            if int(senti_score_trie.find(t)) > 0:
-                print(t)
-            total_score += int(senti_score_trie.find(t))
-        return total_score
 
 
 # if __name__ == '__main__':
